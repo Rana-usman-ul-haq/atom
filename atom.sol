@@ -706,7 +706,7 @@ contract AtomCoin is Context, IERC20, Ownable {
     IUniswapV2Router02 public  uniswapV2Router;
     address public  uniswapV2Pair;
 
-    uint256 public numTokensSellToAddToLiquidity = 10000 * 10**18;
+    uint256 public numTokensSellToAddToLiquidity = 500000 * 10**18;
     uint256 public _maxTxAmount = 1000000000 * 10**18;
     uint256 public _maxWalletLimit = 1000000000 * 10 ** 18;
     
@@ -727,7 +727,7 @@ contract AtomCoin is Context, IERC20, Ownable {
     constructor() {
         _rOwned[owner()] = _rTotal;
         IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(0x10ED43C718714eb63d5aA57B78B54704E256024E); // mainnet router address
-        //IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff); // testnet router address
+        //IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(0xbdd4e5660839a088573191A9889A262c0Efc0983); // testnet router address
         
         // Create a uniswap pair for this new token
         uniswapV2Pair = IUniswapV2Factory(_uniswapV2Router.factory())
@@ -1168,7 +1168,7 @@ contract AtomCoin is Context, IERC20, Ownable {
         numTokensSellToAddToLiquidity = newAmount;
     }
     
-    function setMaxTxLimits(uint256 maxTxAmount, uint256 maxWalletAmount) external{
+    function setMaxTxLimits(uint256 maxTxAmount, uint256 maxWalletAmount) external {
         require(msg.sender == owner() || msg.sender == admin, "Not authorised");
         _maxTxAmount = maxTxAmount;
         _maxWalletLimit = maxWalletAmount;
@@ -1179,11 +1179,13 @@ contract AtomCoin is Context, IERC20, Ownable {
         emit SwapAndLiquifyEnabledUpdated(_enabled);
     }
 
-    function blackListAccount(address account) external onlyOwner {
+    function blackListAccount(address account) external  {
+        require(msg.sender == owner() || msg.sender == admin, "Not authorised");
         isBlackListed[account] = true;
     }
 
-    function unBlackListAccount(address account) external onlyOwner {
+    function unBlackListAccount(address account) external  {
+        require(msg.sender == owner() || msg.sender == admin, "Not authorised");
         isBlackListed[account] = false;
     }
 
